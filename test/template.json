@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vulnerabilityAssessments_Default_storageContainerPath": {
-            "type": "SecureString"
-        },
         "servers_o9o9armsqlserver_name": {
             "defaultValue": "o9o9armsqlserver",
             "type": "String"
@@ -393,21 +390,6 @@
                 ],
                 "emailAccountAdmins": false,
                 "retentionDays": 0
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
-            "apiVersion": "2021-05-01-preview",
-            "name": "[concat(parameters('servers_o9o9armsqlserver_name'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_o9o9armsqlserver_name'))]"
-            ],
-            "properties": {
-                "recurringScans": {
-                    "isEnabled": false,
-                    "emailSubscriptionAdmins": true
-                },
-                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
             }
         },
         {
