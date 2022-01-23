@@ -34,6 +34,13 @@
     },
     "StorageAccountName": {
       "type": "String"
+    },
+    "BlobContainerName": {
+      "type": "string",
+      "defaultValue": "data",
+      "metadata": {
+        "description": "Specifies the name of the blob container."
+      }
     }
   },
   "variables": {},
@@ -80,6 +87,27 @@
         "publicNetworkAccess": "Enabled",
         "managedResourceGroupName": "[concat('managed-rg-', parameters('PurviewAccountName'))]"
       }
-    }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('StorageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default/{1}', parameters('StorageAccountName'), parameters('BlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
+      ]
+    }    
   ]
 }
