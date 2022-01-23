@@ -4,14 +4,12 @@
   "parameters": {
     "SQLDatabaseServerName": {
       "type": "string",
-      "defaultValue": "sqlserver",
       "metadata": {
         "description": "The name of the SQL logical server."
       }
     },
     "SQLDatabaseName": {
       "type": "string",
-      "defaultValue": "sqldb",
       "metadata": {
         "description": "The name of the SQL Database."
       }
@@ -29,15 +27,19 @@
       }
     },  
     "PurviewAccountName": {
-      "defaultValue": "purview",
-      "type": "String"
+      "type": "String",
+      "metadata": {
+        "description": "TODO"
+      }
     },
     "StorageAccountName": {
-      "type": "String"
+      "type": "String",
+      "metadata": {
+        "description": "TODO"
+      }
     },
     "BlobContainerName": {
       "type": "string",
-      "defaultValue": "data",
       "metadata": {
         "description": "Specifies the name of the blob container."
       }
