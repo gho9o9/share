@@ -4,7 +4,7 @@
   "parameters": {
     "servername2": {
       "type": "string",
-      "defaultValue": "sqlserver",
+      "defaultValue": "sqlserver2",
       "metadata": {
         "description": "The name of the SQL logical server."
       }
