@@ -4,14 +4,12 @@
   "parameters": {
     "SQLDatabaseServerName": {
       "type": "string",
-      "defaultValue": "sqlserver",
       "metadata": {
         "description": "The name of the SQL logical server."
       }
     },
     "SQLDatabaseName": {
       "type": "string",
-      "defaultValue": "sqldb",
       "metadata": {
         "description": "The name of the SQL Database."
       }
@@ -29,17 +27,21 @@
       }
     },  
     "PurviewAccountName": {
-      "defaultValue": "purview",
-      "type": "String"
+      "type": "String",
+      "metadata": {
+        "description": "TODO"
+      }
     },
     "StorageAccountName": {
-      "type": "String"
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
+      "type": "String",
       "metadata": {
-        "description": "Specifies the location in which the Azure Storage resources should be deployed."
+        "description": "TODO"
+      }
+    },
+    "BlobContainerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the blob container."
       }
     }
   },
@@ -49,7 +51,7 @@
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2020-02-02-preview",
       "name": "[parameters('SQLDatabaseServerName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "administratorLogin": "[parameters('SQLDatabaseAdmin')]",
         "administratorLoginPassword": "[parameters('SQLDatabaseAdminPassword')]"
@@ -59,7 +61,7 @@
           "type": "databases",
           "apiVersion": "2020-08-01-preview",
           "name": "[parameters('SQLDatabaseName')]",
-          "location": "[parameters('location')]",
+          "location": "[resourceGroup().location]",
           "sku": {
             "name": "Standard",
             "tier": "Standard"
@@ -74,7 +76,7 @@
       "type": "Microsoft.Purview/accounts",
       "apiVersion": "2021-07-01",
       "name": "[parameters('PurviewAccountName')]",
-      "location": "parameters('location')",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
         "capacity": 1
@@ -87,6 +89,27 @@
         "publicNetworkAccess": "Enabled",
         "managedResourceGroupName": "[concat('managed-rg-', parameters('PurviewAccountName'))]"
       }
-    }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('StorageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default/{1}', parameters('StorageAccountName'), parameters('BlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
+      ]
+    }    
   ]
 }
