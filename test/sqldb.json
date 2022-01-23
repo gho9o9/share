@@ -67,7 +67,7 @@
     {
       "type": "Microsoft.Purview/accounts",
       "apiVersion": "2021-07-01",
-      "name": "[parameters('accounts_o9o9armpurview_name')]",
+      "name": "[parameters('purviewAccountName')]",
       "location": "westcentralus",
       "sku": {
         "name": "Standard",
@@ -79,7 +79,7 @@
       "properties": {
         "cloudConnectors": {},
         "publicNetworkAccess": "Enabled",
-        "managedResourceGroupName": "[concat('managed-rg-', parameters('accounts_o9o9armpurview_name'))]"
+        "managedResourceGroupName": "[concat('managed-rg-', parameters('purviewAccountName'))]"
       }
     }
   ]
